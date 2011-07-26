@@ -15,7 +15,7 @@ func sendmail (){
 		auth := smtp.PlainAuth(
 			"",
 			"tapootumfb@gmail.com",
-			"kawaoisoki15124",
+			"password",
 			"smtp.gmail.com",
 		)
 		err := smtp.SendMail(

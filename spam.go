@@ -1,48 +1,44 @@
 package main
 
 import (
-	"time"
 	"fmt"
-	"runtime"
+//	"runtime"
 	"smtp"
 	"log"
 	)
-var c = make (chan int)
+//var gm = make (chan int)
+//var m = make (chan int)
+var wait = make (chan int)
 func sendmail (){
 
-		c <- 1
+		
 	
 		auth := smtp.PlainAuth(
 			"",
-			"tapootumfb@gmail.com",
-			"password",
+			"spamgrean@gmail.com",
+			"greangrean",
 			"smtp.gmail.com",
 		)
 		err := smtp.SendMail(
 			"smtp.gmail.com:587",
 			auth,
-			"tapootumfb@gmail.com",
-			[]string{"tapootumfb@gmail.com"},
+			"spamgrean@gmail.com",
+			[]string{"spamgrean@gmail.com"},
 			[]byte("Gwean send spam mailgo "),
 			)
 		if err != nil {
 			log.Fatal(err)
 			}
-
+		fmt.Println("Send mail")
 	
-
+ wait <- 1
 }
-
 func main() {
-	n := 5
-	runtime.GOMAXPROCS(n)
-	
-	for i:=1; i<=5 ; i++ {
-	go  sendmail()		
-        time.Sleep(600000)	
-	<- c
-	fmt.Printf("Email %d\n",i)	
-	
+	for i:=1 ; i<=10 ; i++{
+		go sendmail()
+	}
+	for i:=1 ; i<=10 ; i++{
+		<- wait
 	}
 
 

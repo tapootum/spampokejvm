@@ -2,29 +2,31 @@ package main
 
 import (
 	"fmt"
-//	"runtime"
 	"smtp"
 	"log"
+	"os"
+	"strconv"
+	"rand"
+	"io/ioutil"
 	)
-//var gm = make (chan int)
-//var m = make (chan int)
 var wait = make (chan int)
-func sendmail (){
+func sendmail (file string){
 
+		st , _ := ioutil.ReadFile(file)
+		msg := string(st)
 		
-	
 		auth := smtp.PlainAuth(
 			"",
-			"spamgrean@gmail.com",
-			"greangrean",
-			"smtp.gmail.com",
+			"tapootum@localhost",
+			"1234",
+			"smtp.localhost",
 		)
 		err := smtp.SendMail(
-			"smtp.gmail.com:587",
+			"smtp.localhost:25",
 			auth,
-			"spamgrean@gmail.com",
-			[]string{"spamgrean@gmail.com"},
-			[]byte("Gwean send spam mailgo "),
+			"tapootum@localhost",
+			[]string{"tapootum@localhost"},
+			[]byte(msg),
 			)
 		if err != nil {
 			log.Fatal(err)
@@ -33,13 +35,24 @@ func sendmail (){
 	
  wait <- 1
 }
-func main() {
-	for i:=1 ; i<=10 ; i++{
-		go sendmail()
-	}
-	for i:=1 ; i<=10 ; i++{
+func main() { 
+
+	if len(os.Args) == 1 {
+		fmt.Println("Don't send mail")
+	}else {
+	
+	s := os.Args[1]
+	n , _ := strconv.Atoi(s)
+
+	for i:=1 ; i<=n ; i++{	
+		num := rand.Int63n(n)
+		ff := strconv.Itoa64(num)
+		file := ff + ".txt"
+		go sendmail(file)
+		}
+	for i:=1 ; i<=n ; i++{
 		<- wait
+		}
+
 	}
-
-
 }

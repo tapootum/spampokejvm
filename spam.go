@@ -18,7 +18,7 @@ func sendmail (file string){
 		auth := smtp.PlainAuth(
 			"",
 			"spam@tapootum.com",
-			"kawaoisoki",
+			"XXXXX",
 			"tapootum.com",
 		)
 		err := smtp.SendMail(

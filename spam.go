@@ -17,15 +17,15 @@ func sendmail (file string){
 		
 		auth := smtp.PlainAuth(
 			"",
-			"tapootum@localhost",
-			"1234",
-			"smtp.localhost",
+			"spam@tapootum.com",
+			"kawaoisoki",
+			"tapootum.com",
 		)
 		err := smtp.SendMail(
-			"smtp.localhost:25",
+			"tapootum.com:25",
 			auth,
-			"tapootum@localhost",
-			[]string{"tapootum@localhost"},
+			"spam@tapootum.com",
+			[]string{"spamtest@tapootum.com"},
 			[]byte(msg),
 			)
 		if err != nil {
@@ -42,15 +42,15 @@ func main() {
 	}else {
 	
 	s := os.Args[1]
-	n , _ := strconv.Atoi(s)
+	n , _ := strconv.Atoi64(s)
 
-	for i:=1 ; i<=n ; i++{	
-		num := rand.Int63n(n)
+	for i:=1 ; int64(i)<=n ; i++{	
+		num := rand.Int63n(20)
 		ff := strconv.Itoa64(num)
 		file := ff + ".txt"
 		go sendmail(file)
 		}
-	for i:=1 ; i<=n ; i++{
+	for i:=1 ; int64(i)<=n ; i++{
 		<- wait
 		}
 

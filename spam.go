@@ -10,7 +10,8 @@ import (
 	"io/ioutil"
 	"runtime"
 	)
-var wait,wait2 = make (chan int)
+var wait = make (chan int)
+var wait2 = make (chan int)
 var count int
 func sendmail (){
 	//	random file	
@@ -55,7 +56,7 @@ func sendmail (){
 
 }
 func gomail(){
-	 for i := 1 ; i <= 20 ; i++{
+	 for i := 1 ; i <= 10 ; i++{
 		go sendmail()
 		<- wait
 	}
@@ -76,7 +77,8 @@ func main() {
 	fmt.Printf("||||||||||||||||||||||||||||||||||||||||||| %d\n",i)
 		<- wait
 		}
-	for i:=1 ; int64(i)<=n ; i++{
+	for i:=1 ; int64(i)<=n*10 ; i++{
+		<-wait
 		<- wait2
 		}
 	}	

@@ -38,7 +38,7 @@ func sendmail (){
 		auth := smtp.PlainAuth(
 			"",
 			"spam@tapootum.com",
-			"kawaoisoki",
+			"XXXXXX",
 			"tapootum.com",  // smtp protocal
 		)
 		err := smtp.SendMail(

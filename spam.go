@@ -10,9 +10,12 @@ import (
 	"io/ioutil"
 	"runtime"
 	)
+
+
 var wait = make (chan int)
-var wait2 = make (chan int)
 var count int
+
+
 func sendmail (){
 	//	random file	
                 num := rand.Int63n(20)
@@ -50,21 +53,15 @@ func sendmail (){
 			}
 		count++
 		fmt.Print(count)
-		fmt.Println("Send mail")	
+		fmt.Println("   Send mail")	
 	// channel
  	 wait <- 1
 
 }
-func gomail(){
-	 for i := 1 ; i <= 10 ; i++{
-		go sendmail()
-		<- wait
-	}
-wait2 <- 1
-}
+
 func main() {
-	//times1,timens1,_ := os.Time()
-	runtime.GOMAXPROCS(4)
+	times1 , _ , _ := os.Time()
+	runtime.GOMAXPROCS(2)
 	if len(os.Args) == 1 {
 		fmt.Println("Don't send mail")
 	}else {
@@ -73,19 +70,34 @@ func main() {
 	n , _ := strconv.Atoi64(s)
 
 	for i:=1 ; int64(i)<=n ; i++{
-		go gomail()
-	fmt.Printf("||||||||||||||||||||||||||||||||||||||||||| %d\n",i)
+		go sendmail()
+		go sendmail()
+		go sendmail()
+		go sendmail()
+		go sendmail()
+		go sendmail()
+		go sendmail()
+		go sendmail()
+		go sendmail()
+		go sendmail()
+
+	fmt.Printf("|||||||||||||||||||||| %d\n",i)
 		<- wait
-		}
-	for i:=1 ; int64(i)<=n*10 ; i++{
-		<-wait
-		<- wait2
-		}
+		<- wait
+		<- wait
+		<- wait
+		<- wait
+		<- wait
+		<- wait
+		<- wait
+		<- wait
+		<- wait
+		}   
 	}	
 
-	//times2,timens2,_ := os.Time()
- 
+	times2 , _ , _ := os.Time()
+ 	tt := times2-times1
 		fmt.Printf("Send spam mail = ")
 		fmt.Println(count)
-	//	fmt.Printf("%.2f s =  %.2f ns/n",times2,timens2)
+		fmt.Printf(".............%d s...........\n",tt)
 }

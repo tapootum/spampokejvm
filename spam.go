@@ -41,7 +41,7 @@ func sendmail (){
 			"",
 			"spam@tapootum.com",
 			"XXXXXX",
-			"tapootum.com",  // smtp protocal
+			"tapootum.com",  // smtp protocal ,, No port
 		)
 		err := smtp.SendMail(
 			"tapootum.com:25",  

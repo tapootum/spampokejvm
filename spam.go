@@ -74,6 +74,8 @@ func send(n int64){
 }
 
 func main() {
+	go send(1)
+//		<- wait
 	times1 , _ , _ := os.Time()
 	runtime.GOMAXPROCS(4)
 	if len(os.Args) == 1 {
@@ -86,13 +88,14 @@ func main() {
 	var tt1 int64
 	tt1 = 0
 	v := 0
-
+//		go sendmail()
+//		<- wait
 		for {
 			tt2:=time.Seconds()
 				if tt1 < tt2 {
 					go send(n)
 					v++
-					wait <- 1
+					//wait <- 1
 				}
 				if v == 5{
 					break

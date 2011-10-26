@@ -9,13 +9,19 @@ import (
 	"rand"
 	"io/ioutil"
 	"runtime"
+	"time"
 	)
-
-
-
 
 var wait = make (chan int)
 var count int
+
+
+var auth = smtp.PlainAuth(
+                        "",
+                        "anchalee@bangkokranch.co.th",
+                        "11111",
+                        "mail2.bangkokranch.co.th",  // smtp protocal //No port
+                )
 
 
 func sendmail (){
@@ -37,17 +43,11 @@ func sendmail (){
 
 	//     send mail of smtp
 		msg := "Subject:" + subj + "\n" + mss
-		auth := smtp.PlainAuth(
-			"",
-			"spam@tapootum.com",
-			"XXXXXX",
-			"tapootum.com",  // smtp protocal
-		)
 		err := smtp.SendMail(
-			"tapootum.com:25",  
+			"mail2.bangkokranch.co.th:25",  
 			auth,
-			"spam@tapootum.com",   // from 
-			[]string{"spamtest@tapootum.com"},  //to
+			"anchalee@mail2bangkokranch.co.th",   // from 
+			[]string{"anchalee@bangkokranch.co.th"},  //to
 			[]byte(msg),
 			)
 		if err != nil {
@@ -55,9 +55,22 @@ func sendmail (){
 			}
 		count++
 		fmt.Print(count)
-		fmt.Println("   Send mail")	
+		fmt.Println("   Send mail")
 	// channel
- 	 wait <- 1
+	wait <- 1
+
+}
+
+func send(n int64){
+		for i:=1 ; int64(i)<=n ; i++ {
+			go sendmail()
+		}
+
+			fmt.Printf("|||||||||||||||||||||| %d\n",n)
+
+		for j:=1 ; int64(j)<=n ; j++{
+			<- wait
+		}
 
 }
 
@@ -67,39 +80,36 @@ func main() {
 	if len(os.Args) == 1 {
 		fmt.Println("Don't send mail")
 	}else {
-	
+
 	s := os.Args[1]
 	n , _ := strconv.Atoi64(s)
 
-	for i:=1 ; int64(i)<=n ; i++{
-		go sendmail()
-		go sendmail()
-		go sendmail()
-		go sendmail()
-		go sendmail()
-		go sendmail()
-		go sendmail()
-		go sendmail()
-		go sendmail()
-		go sendmail()
+	var tt1 int64
+	tt1 = 0
+	v := 0
+		for {
+			tt2:=time.Seconds()
+				if tt1 < tt2 {
+					go send(n)
+					v++
+					wait <- 1
+				}
+				if v == 5{
+					break
+					fmt.Println("tttttttttttttttttttttttttttttttttttttttttt")
+				}
+			tt1=tt2
+		}
+	}
 
-	fmt.Printf("|||||||||||||||||||||| %d\n",i)
-		<- wait
-		<- wait
-		<- wait
-		<- wait
-		<- wait
-		<- wait
-		<- wait
-		<- wait
-		<- wait
-		<- wait
-		}   
-	}	
+		for j:=1 ; int64(j)<=5 ; j++{
+			<- wait
+		}
 
 	times2 , _ , _ := os.Time()
- 	tt := times2-times1
+	tt := times2-times1
 		fmt.Printf("Send spam mail = ")
 		fmt.Println(count)
 		fmt.Printf(".............%d s...........\n",tt)
+
 }

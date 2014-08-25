@@ -2,11 +2,11 @@ package main
 
 import (
 	"fmt"
-	"smtp"
+	"net/smtp"
 	"log"
 	"os"
 	"strconv"
-	"rand"
+	"math/rand"
 	"io/ioutil"
 	"runtime"
 	)

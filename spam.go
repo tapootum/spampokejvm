@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/smtp"
 	"log"
-	"os"
+//	"os"
 	"strconv"
 	"math/rand"
 	"io/ioutil"
@@ -21,11 +21,11 @@ var count int
 func sendmail (){
 	//	random file	
                 num := rand.Int63n(20)
-                ff := strconv.Itoa64(num)
+                ff := strconv.FormatInt(num,10)
                 file := ff + ".txt"
 	//	random subject
                 num2 := rand.Int63n(20)
-                aa := strconv.Itoa64(num2)
+                aa := strconv.FormatInt(num2,10)
                 dir := aa + ".txt"
 
 
@@ -39,15 +39,15 @@ func sendmail (){
 		msg := "Subject:" + subj + "\n" + mss
 		auth := smtp.PlainAuth(
 			"",
-			"spam@tapootum.com",
-			"XXXXXX",
-			"tapootum.com",  // smtp protocal ,, No port
+			"tapootumchannel@gmail.com",
+			"p@ssw0rd",
+			"smtp.gmail.com",  // smtp protocal ,, No port
 		)
 		err := smtp.SendMail(
-			"tapootum.com:25",  
+			"smtp.gmail.com:587",  
 			auth,
-			"spam@tapootum.com",   // from 
-			[]string{"spamtest@tapootum.com"},  //to
+			"tapootumchannel@gmail.com",   // from 
+			[]string{"tapootumchannel@gmail.com"},  //to
 			[]byte(msg),
 			)
 		if err != nil {
@@ -62,16 +62,18 @@ func sendmail (){
 }
 
 func main() {
-	times1 , _ , _ := os.Time()
+//	times1 , _ , _ := os.Time()
 	runtime.GOMAXPROCS(2)
-	if len(os.Args) == 1 {
-		fmt.Println("Don't send mail")
-	}else {
+	//if len(os.Args) == 1 {
+	//	fmt.Println("Don't send mail")
+	//}else {
 	
-	s := os.Args[1]
-	n , _ := strconv.Atoi64(s)
+	//s := os.Args[1]
+	//n , _ := strconv.FormatInt(s,10)
+	n := 1
 
-	for i:=1 ; int64(i)<=n ; i++{
+	//for i:=1 ; int64(i)<=n ; i++{
+	for i:=1 ; i<=n ; i++{
 		go sendmail()
 		go sendmail()
 		go sendmail()
@@ -95,11 +97,11 @@ func main() {
 		<- wait
 		<- wait
 		}   
-	}	
+	//}	
 
-	times2 , _ , _ := os.Time()
- 	tt := times2-times1
+//	times2 , _ , _ := os.Time()
+ //	tt := times2-times1
 		fmt.Printf("Send spam mail = ")
 		fmt.Println(count)
-		fmt.Printf(".............%d s...........\n",tt)
+//		fmt.Printf(".............%d s...........\n",tt)
 }
